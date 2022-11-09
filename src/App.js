@@ -1,22 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Item from "./Item";
+import Form from "./Form";
 
 function App() {
+  const [error, setError] = useState(false);
+
+  const items = [
+    {
+      id: 1,
+      utensil: "Spoon",
+    },
+    {
+      id: 2,
+      utensil: "Knife",
+    },
+    {
+      id: 3,
+      utensil: "Plate",
+    },
+  ];
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+        <h1 data-testid="header">Items</h1>
+        {items.map((item) => {
+          return <Item key={item.id} utensil={item.utensil} />;
+        })}
+        <Form />
+        <h2
+          data-testid="errorMsg"
+          style={{ visibility: error ? "visible" : "hidden" }}
         >
-          Learn React
-        </a>
+          A hidden error message!
+        </h2>
       </header>
     </div>
   );
