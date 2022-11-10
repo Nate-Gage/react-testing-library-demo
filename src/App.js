@@ -4,7 +4,7 @@ import Item from "./Item";
 import Form from "./Form";
 
 function App() {
-  const [error, setError] = useState(false);
+  const [error] = useState(false);
 
   const items = [
     {

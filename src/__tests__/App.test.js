@@ -80,8 +80,36 @@ test("Button should not be disabled if inputs exist and length > 3", () => {
   expect(buttonEl).not.toBeDisabled();
 });
 
+test("Loading should not be rendered,", () => {
+  render(<Form />);
+  const buttonEl = screen.getByRole("button");
+  expect(buttonEl).not.toHaveTextContent(/please wait/i);
+});
+
 test("Error message should be hidden", () => {
   render(<App />);
   const el = screen.getByTestId("errorMsg");
   expect(el).not.toBeVisible();
+});
+
+test("Name h2 renders", () => {
+  render(<Form />);
+
+  const el = screen.getByTestId("nameHeading");
+  expect(el).toBeInTheDocument();
+});
+
+test("Loading should render on click,", () => {
+  render(<Form />);
+  const buttonEl = screen.getByRole("button");
+
+  const testValue = "test";
+  const formNameEl = screen.getByPlaceholderText(/username/i);
+  const formPasswordEl = screen.getByPlaceholderText(/password/i);
+
+  fireEvent.change(formNameEl, { target: { value: testValue } });
+  fireEvent.change(formPasswordEl, { target: { value: testValue } });
+  fireEvent.click(buttonEl);
+
+  expect(buttonEl).toHaveTextContent(/please wait/i);
 });
