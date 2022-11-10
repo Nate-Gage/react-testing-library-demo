@@ -66,6 +66,20 @@ test("Button should be disabled,", () => {
   expect(buttonEl).toBeDisabled();
 });
 
+test("Button should not be disabled if inputs exist and length > 3", () => {
+  render(<Form />);
+  const buttonEl = screen.getByRole("button");
+
+  const testValue = "test";
+  const formNameEl = screen.getByPlaceholderText(/username/i);
+  const formPasswordEl = screen.getByPlaceholderText(/password/i);
+
+  fireEvent.change(formNameEl, { target: { value: testValue } });
+  fireEvent.change(formPasswordEl, { target: { value: testValue } });
+
+  expect(buttonEl).not.toBeDisabled();
+});
+
 test("Error message should be hidden", () => {
   render(<App />);
   const el = screen.getByTestId("errorMsg");

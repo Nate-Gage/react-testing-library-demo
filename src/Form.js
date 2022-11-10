@@ -4,6 +4,10 @@ const Form = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const isValidEntry = () => {
+    return username.length > 3 && password.length > 3;
+  };
+
   return (
     <div>
       <input
@@ -20,7 +24,7 @@ const Form = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <br />
-      <button disabled="true">CLICK ME</button>
+      <button disabled={!isValidEntry()}>CLICK ME</button>
     </div>
   );
 };
