@@ -17,6 +17,10 @@ const Form = () => {
     fetch(`https://pokeapi.co/api/v2/pokemon/34/`)
       .then((response) => response.json())
       .then((data) => setPokemonName(data.name));
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   return (

@@ -1,4 +1,10 @@
-import { render, screen, cleanup, fireEvent } from "@testing-library/react";
+import {
+  render,
+  screen,
+  cleanup,
+  fireEvent,
+  waitFor,
+} from "@testing-library/react";
 import App from "../App";
 import Item from "../Item";
 import Form from "../Form";
@@ -6,6 +12,14 @@ import Form from "../Form";
 afterEach(() => {
   cleanup();
 });
+
+jest.mock("axios", () => ({
+  __esModule: true,
+
+  default: {
+    get: () => {},
+  },
+}));
 
 test("App component render", () => {
   render(<App />);
@@ -99,7 +113,7 @@ test("Name h2 renders", () => {
   expect(el).toBeInTheDocument();
 });
 
-test("Loading should render on click,", () => {
+test("Please Wait text should render on click,", () => {
   render(<Form />);
   const buttonEl = screen.getByRole("button");
 
@@ -112,4 +126,21 @@ test("Loading should render on click,", () => {
   fireEvent.click(buttonEl);
 
   expect(buttonEl).toHaveTextContent(/please wait/i);
+});
+
+test("Please Wait text should not render after fetch,", async () => {
+  render(<Form />);
+  const buttonEl = screen.getByRole("button");
+
+  const testValue = "test";
+  const formNameEl = screen.getByPlaceholderText(/username/i);
+  const formPasswordEl = screen.getByPlaceholderText(/password/i);
+
+  fireEvent.change(formNameEl, { target: { value: testValue } });
+  fireEvent.change(formPasswordEl, { target: { value: testValue } });
+  fireEvent.click(buttonEl);
+
+  const buttonText = await screen.findByText("CLICK ME");
+
+  expect(buttonText).toBeInTheDocument();
 });
